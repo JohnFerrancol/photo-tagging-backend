@@ -152,8 +152,8 @@ npm run start
 
 ## Roadmap
 
-- [ ] Create the Prisma Schema for the 4 models: Image, Character, Session, Leaderboard
-- [ ] Store the games' photos in a Supabase and integrate them into the Express server
+- [x] Create the Prisma Schema for the 4 models: Image, Character, Session, Leaderboard
+- [x] Store the games' photos in a Supabase and integrate them into the Express server
 - [ ] Create HTTP Requests (Routes and Controllers) for GET /games and GET /games/:id, to obtain the relevant information for the photo tagging games
 - [ ] Create HTTP Request (Route and Controller) for POST /games/:id/start to start a game and store it in a session
 - [ ] Create HTTP Request (Route and Controller) for POST /games/:id/guess to verify the user's guess

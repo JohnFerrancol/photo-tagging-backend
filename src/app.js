@@ -1,10 +1,6 @@
 import express from 'express';
-import expressLayouts from 'express-ejs-layouts';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import 'dotenv/config';
+import cors from 'cors';
 
-import createLocals from './middleware/locals.middleware.js';
 import errorHandler from './middleware/errors.middleware.js';
 
 import indexRouter from './routes/index.routes.js';
@@ -12,21 +8,16 @@ import apiRouter from './routes/api.routes.js';
 
 const app = express();
 
-// Get filename, dirname and assetPaths for CSS
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const assetsPath = path.join(__dirname, 'public');
+// Parse incoming POST request data to be converted into a useable JS object
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Let Express App use Express Layouts and static files
-app.use(expressLayouts);
-app.use(express.static(assetsPath));
-
-// Set Views engine anf Express layout
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.set('layout', 'layout');
-
-app.use(createLocals);
+// Set up CORS for the local React app as well as the deployed Vercel App
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'https://photo-tagging-frontend.app'],
+  })
+);
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);

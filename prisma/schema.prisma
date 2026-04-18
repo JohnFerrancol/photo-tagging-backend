@@ -11,7 +11,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model Image {
+model Game {
   id       Int    @id @default(autoincrement())
   name     String
   imageUrl String
@@ -24,23 +24,24 @@ model Image {
 model Character {
   id          Int    @id @default(autoincrement())
   name        String
+  imageUrl    String
   x_value     Float
   x_tolerance Float
   y_value     Float
   y_tolerance Float
 
-  image   Image @relation(fields: [imageId], references: [id])
-  imageId Int
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
 }
 
 model Leaderboard {
-  id        Int      @id @default(autoincrement())
-  name      String
-  time      Float
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  playerName String
+  time       Float
+  createdAt  DateTime @default(now())
 
-  image   Image @relation(fields: [imageId], references: [id])
-  imageId Int
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
 }
 
 model GameSession {
@@ -51,6 +52,6 @@ model GameSession {
   foundCharacters Int       @default(0)
   completed       Boolean   @default(false)
 
-  image   Image @relation(fields: [imageId], references: [id])
-  imageId Int
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
 }
