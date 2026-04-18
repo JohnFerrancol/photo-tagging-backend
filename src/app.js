@@ -3,8 +3,7 @@ import cors from 'cors';
 
 import errorHandler from './middleware/errors.middleware.js';
 
-import indexRouter from './routes/index.routes.js';
-import apiRouter from './routes/api.routes.js';
+import gamesRouter from './routes/games.routes.js';
 
 const app = express();
 
@@ -19,8 +18,7 @@ app.use(
   })
 );
 
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
+app.use('/api/v1/games', gamesRouter);
 
 app.use(errorHandler);
 

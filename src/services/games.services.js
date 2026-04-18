@@ -1,5 +1,9 @@
 import { prisma } from '../config/prisma.js';
 
+const getAllGames = async () => {
+  return await prisma.game.findMany();
+};
+
 const insertGame = async (name, imageUrl) => {
   return await prisma.game.create({
     data: {
@@ -9,4 +13,4 @@ const insertGame = async (name, imageUrl) => {
   });
 };
 
-export { insertGame };
+export { getAllGames, insertGame };
