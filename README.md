@@ -80,16 +80,16 @@ photo-tagging-backend/
 │   │
 │   ├── controllers/
 │   │   ├── game.controller.js
-│   │   └── leaderboard.controller.js
+│   │   └── leaderboards.controller.js
 │   │
 │   ├── routes/
 │   │   ├── game.routes.js
-│   │   └── leaderboard.routes.js
+│   │   └── leaderboards.routes.js
 │   │
 │   ├── services/
-│   │   ├── game.service.js
-│   │   ├── validation.service.js
-│   │   └── session.service.js
+│   │   ├── game.services.js
+│   │   ├── characters.services.js
+│   │   └── leaderboards.services.js
 │   │
 │   ├── config/
 │   │   ├── passport.js
@@ -156,7 +156,7 @@ npm run start
 - [x] Store the games' photos in a Supabase and integrate them into the Express server
 - [x] Create HTTP Request for GET /games to obtain the infromation of the games for the Home Page in the frontend
 - [x] Create HTTP Request for GET /games/:gameId to obtain the infromation for the specific game for the Game Page in the frontend
-- [ ] Create HTTP Request for GET /leaderboards to obtain the leaderboard for each game for the Leaderboard Page in the frontend
+- [x] Create HTTP Request for GET /leaderboards/:gameId to obtain the leaderboard for each game for the Leaderboard Page in the frontend
 - [ ] Create HTTP Request for POST /games/:gameId/start to start a game and store it in a session
 - [ ] Create HTTP Request for POST /games/:gameId/guess to verify the user's guess
 - [ ] Create HTTP Request for POST /games/:gameId/finish to save the user's information, like completion time and name, after completing each game

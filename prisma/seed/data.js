@@ -1,4 +1,4 @@
-export const games = [
+const games = [
   {
     name: 'Children Game',
     folder: 'children-game',
@@ -93,3 +93,32 @@ export const games = [
     ],
   },
 ];
+
+const leaderboardSeed = [
+  {
+    gameId: 1,
+    entries: [
+      { name: 'Alice', time: 28.4 },
+      { name: 'Bob', time: 12.7 },
+      { name: 'Charlie', time: 22.1 },
+    ],
+  },
+  {
+    gameId: 2,
+    entries: [
+      { name: 'Dylan', time: 23.2 },
+      { name: 'Eve', time: 25.8 },
+      { name: 'Frank', time: 13.5 },
+    ],
+  },
+  {
+    gameId: 3,
+    entries: [
+      { name: 'Greg', time: 34.2 },
+      { name: 'Holly', time: 17.8 },
+      { name: 'Ivan', time: 26.5 },
+    ],
+  },
+];
+
+export { games, leaderboardSeed };

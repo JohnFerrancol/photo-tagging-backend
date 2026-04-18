@@ -4,6 +4,7 @@ import cors from 'cors';
 import errorHandler from './middleware/errors.middleware.js';
 
 import gamesRouter from './routes/games.routes.js';
+import leaderboardsRouter from './routes/leaderboards.routes.js';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(
 );
 
 app.use('/api/v1/games', gamesRouter);
+app.use('/api/v1/leaderboards', leaderboardsRouter);
 
 app.use(errorHandler);
 

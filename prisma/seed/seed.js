@@ -1,9 +1,10 @@
 import { prisma } from '../../src/config/prisma.js';
-import { games } from './data.js';
+import { games, leaderboardSeed } from './data.js';
 import { uploadImage } from './upload.js';
 
 import { insertGame } from '../../src/services/games.services.js';
 import { insertCharacter } from '../../src/services/characters.services.js';
+import { insertLeaderboardEntry } from '../../src/services/leaderboards.services.js';
 
 async function main() {
   console.log('Seeding Database.....');
@@ -60,6 +61,17 @@ async function main() {
       console.log(`Character added: ${char.name}`);
     }
   }
+
+  // ======================
+  // Add Dummy Leaderboard Data
+  // ======================
+  for (const game of leaderboardSeed) {
+    for (const entry of game.entries) {
+      await insertLeaderboardEntry(entry.name, entry.time, game.gameId);
+    }
+  }
+
+  console.log('Added Leaderboard entries');
 
   console.log('Database Seeded!');
 }

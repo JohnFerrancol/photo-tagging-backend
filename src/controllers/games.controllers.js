@@ -32,7 +32,7 @@ const getSingleGameInformation = async (req, res) => {
     if (game) {
       res.json({
         status: 'success',
-        message: 'Received game infromation',
+        message: 'Received game information',
         game: game,
       });
     } else {
