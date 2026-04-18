@@ -1,8 +1,12 @@
 import { Router } from 'express';
-import { getGamesInformation } from '../controllers/games.controllers.js';
+import {
+  getGamesInformation,
+  getSingleGameInformation,
+} from '../controllers/games.controllers.js';
 
 const router = Router();
 
 router.get('/', getGamesInformation);
+router.get('/:gameId', getSingleGameInformation);
 
 export default router;

@@ -4,6 +4,17 @@ const getAllGames = async () => {
   return await prisma.game.findMany();
 };
 
+const getSingleGame = async (gameId) => {
+  return await prisma.game.findUnique({
+    where: {
+      id: gameId,
+    },
+    include: {
+      characters: true,
+    },
+  });
+};
+
 const insertGame = async (name, imageUrl) => {
   return await prisma.game.create({
     data: {
@@ -13,4 +24,4 @@ const insertGame = async (name, imageUrl) => {
   });
 };
 
-export { getAllGames, insertGame };
+export { getAllGames, getSingleGame, insertGame };
