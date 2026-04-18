@@ -11,18 +11,46 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model Image {
+  id       Int    @id @default(autoincrement())
+  name     String
+  imageUrl String
+
+  characters  Character[]
+  sessions    GameSession[]
+  leaderboard Leaderboard[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Character {
+  id          Int    @id @default(autoincrement())
+  name        String
+  x_value     Float
+  x_tolerance Float
+  y_value     Float
+  y_tolerance Float
+
+  image   Image @relation(fields: [imageId], references: [id])
+  imageId Int
+}
+
+model Leaderboard {
+  id        Int      @id @default(autoincrement())
+  name      String
+  time      Float
+  createdAt DateTime @default(now())
+
+  image   Image @relation(fields: [imageId], references: [id])
+  imageId Int
+}
+
+model GameSession {
+  id              Int       @id @default(autoincrement())
+  startTime       DateTime  @default(now())
+  endTime         DateTime?
+  createdAt       DateTime  @default(now())
+  foundCharacters Int       @default(0)
+  completed       Boolean   @default(false)
+
+  image   Image @relation(fields: [imageId], references: [id])
+  imageId Int
 }

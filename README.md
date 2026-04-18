@@ -15,6 +15,7 @@ This is a project from [The Odin Project](https://theodinproject.com): [Project:
 - [![Postgres](https://img.shields.io/badge/Postgres-%23316192.svg?logo=postgresql&logoColor=white)](#)
 - [![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white)](#)
 - [![Render](https://img.shields.io/badge/Render-46E3B7?logo=render&logoColor=000)](#)
+- [![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=fff)](#)
 
 ## API Documentation
 
@@ -23,39 +24,46 @@ This is a project from [The Odin Project](https://theodinproject.com): [Project:
 ```sh
 GET /games
 ```
-  - Returns all available images
+
+- Returns all available images
 
 ```sh
 GET /games/:id
 ```
-  - Returns image + characters
+
+- Returns image + characters
 
 ### Gameplay Routes
+
 ```sh
 POST /games/:id/start
 ```
-  - Starts game session
-  - Returns sessionId
+
+- Starts game session
+- Returns sessionId
 
 ```sh
 POST /games/:id/guess
 ```
-  - Validates user click
-  - Checks character + coordinates
+
+- Validates user click
+- Checks character + coordinates
 
 ```sh
 POST /games/:id/finish
 ```
-  - Ends session
-  - Calculates time
-  - Saves leaderboard entry
-  
+
+- Ends session
+- Calculates time
+- Saves leaderboard entry
+
 ### Leaderboard Route
 
 ```sh
 GET /leaderboard/:id
 ```
-  - Returns sorted scores
+
+- Returns sorted scores
 
 ## Project Structure
 
@@ -146,8 +154,8 @@ npm run start
 
 - [ ] Create the Prisma Schema for the 4 models: Image, Character, Session, Leaderboard
 - [ ] Store the games' photos in a Supabase and integrate them into the Express server
-- [ ] Create HTTP Requests (Routes and Controllers) for GET /games and GET /games/:id, to obtain the relevant information for the photo tagging games 
+- [ ] Create HTTP Requests (Routes and Controllers) for GET /games and GET /games/:id, to obtain the relevant information for the photo tagging games
 - [ ] Create HTTP Request (Route and Controller) for POST /games/:id/start to start a game and store it in a session
-- [ ] Create HTTP Request (Route and Controller) for POST /games/:id/guess to verify the user's guess 
+- [ ] Create HTTP Request (Route and Controller) for POST /games/:id/guess to verify the user's guess
 - [ ] Create HTTP Request (Route and Controller) for POST /games/:id/finish to save the user's information, like completion time and name, after completing each game
 - [ ] Create HTTP Request (Route and Controller) for GET /leaderboard/:id to obtain the leaderboard for each game
