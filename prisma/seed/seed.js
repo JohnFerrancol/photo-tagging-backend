@@ -1,56 +1,57 @@
 import { prisma } from '../../src/config/prisma.js';
-import { games, leaderboardSeed } from './data.js';
-import { uploadImage } from './upload.js';
-
+import { leaderboardSeed } from './data.js';
 import { insertGame } from '../../src/services/games.services.js';
 import { insertCharacter } from '../../src/services/characters.services.js';
 import { insertLeaderboardEntry } from '../../src/services/leaderboards.services.js';
 
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const uploadedGames = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, './uploadedData.json'), 'utf-8')
+);
+
 async function main() {
   console.log('Seeding Database.....');
-
-  // Reset DB
-  await prisma.$executeRawUnsafe(
-    'TRUNCATE TABLE "GameSession" RESTART IDENTITY CASCADE;'
-  );
-
-  await prisma.$executeRawUnsafe(
-    'TRUNCATE TABLE "Leaderboard" RESTART IDENTITY CASCADE;'
-  );
-
-  await prisma.$executeRawUnsafe(
-    'TRUNCATE TABLE "Character" RESTART IDENTITY CASCADE;'
-  );
-
-  await prisma.$executeRawUnsafe(
-    'TRUNCATE TABLE "Game" RESTART IDENTITY CASCADE;'
-  );
-
-  console.log('DB reset.');
 
   // ======================
   // Add Games
   // ======================
-  for (const game of games) {
-    console.log(` Uploading game image: ${game.name}`);
+  await prisma.$executeRawUnsafe(
+    'TRUNCATE TABLE "GameSession" RESTART IDENTITY CASCADE;'
+  );
+  await prisma.$executeRawUnsafe(
+    'TRUNCATE TABLE "Leaderboard" RESTART IDENTITY CASCADE;'
+  );
+  await prisma.$executeRawUnsafe(
+    'TRUNCATE TABLE "Character" RESTART IDENTITY CASCADE;'
+  );
+  await prisma.$executeRawUnsafe(
+    'TRUNCATE TABLE "Game" RESTART IDENTITY CASCADE;'
+  );
 
-    // 1. Upload game image
-    const gameImageUrl = await uploadImage(game.imagePath, game.folder);
+  console.log('DB reset.\n');
 
-    // 2. Insert game into DB
-    const createdGame = await insertGame(game.name, gameImageUrl);
+  // ======================
+  // Add Games
+  // ======================
+  for (const game of uploadedGames) {
+    console.log(`\nCreating game: ${game.name}`);
+
+    const createdGame = await insertGame(game.name, game.imageUrl);
 
     console.log(`Game created: ${createdGame.name}`);
 
-    // 3. Process characters
     for (const char of game.characters) {
-      console.log(`Uploading character: ${char.name}`);
-
-      const charImageUrl = await uploadImage(char.imagePath, game.folder);
+      console.log(`Adding character: ${char.name}`);
 
       await insertCharacter(
         char.name,
-        charImageUrl,
+        char.imageUrl,
         char.x,
         char.xTol,
         char.y,
@@ -72,9 +73,9 @@ async function main() {
   }
 
   console.log('Added Leaderboard entries');
-
   console.log('Database Seeded!');
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect();
