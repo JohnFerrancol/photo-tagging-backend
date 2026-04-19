@@ -1,12 +1,15 @@
 import { getAllGames, getSingleGame } from '../services/games.services.js';
 import { getSingleCharacterData } from '../services/characters.services.js';
+import { insertLeaderboardEntry } from '../services/leaderboards.services.js';
 import {
   getGameSessionInformation,
   insertGameSession,
   insertFoundCharacter,
+  updateGameSession,
 } from '../services/gamesessions.services.js';
 
 import newGuessValidator from '../validators/guesses.validators.js';
+import finishGameValidator from '../validators/finish.validators.js';
 import { validationResult, matchedData } from 'express-validator';
 
 const getGamesInformation = async (req, res) => {
@@ -103,7 +106,6 @@ const guessCharacter = [
         return res.status(404).json({
           status: 'error',
           message: 'Session not found',
-          correct: false,
         });
       }
 
@@ -121,7 +123,6 @@ const guessCharacter = [
         return res.status(404).json({
           status: 'error',
           message: 'Character not found',
-          correct: false,
         });
       }
 
@@ -162,9 +163,91 @@ const guessCharacter = [
   },
 ];
 
+const finishGame = [
+  finishGameValidator,
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid data',
+          errors: errors.array(),
+        });
+      }
+
+      const gameId = Number(req.params.gameId);
+      const { sessionId, playerName } = matchedData(req);
+
+      // Checking whether the session is in the database
+      const sessionData = await getGameSessionInformation(sessionId);
+      if (!sessionData) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Session not found',
+        });
+      }
+
+      // Checking whether the session even belongs to the game
+      if (sessionData.gameId !== gameId) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Session does not belong to this game',
+        });
+      }
+
+      // Checking whether the session is already completed
+      if (sessionData.completed) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Session is already completed',
+        });
+      }
+
+      // Checking all characters are found
+      const gameData = await getSingleGame(gameId);
+      if (sessionData.foundCharacterIds.length !== gameData.characters.length) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'All Characters have not been found yet',
+        });
+      }
+
+      // Compute the time
+      const endTime = new Date();
+      const startTime = new Date(sessionData.startTime);
+
+      const completionTime =
+        Math.round(((endTime - startTime) / 1000) * 10) / 10;
+
+      // Update the game session entry
+      await updateGameSession(sessionId, endTime);
+
+      // Insert leaderboard entry
+      await insertLeaderboardEntry(playerName, completionTime, gameId);
+
+      res.json({
+        status: 'success',
+        message: 'Game Completed',
+        data: {
+          time: completionTime,
+          completed: true,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
+  },
+];
+
 export {
   getGamesInformation,
   getSingleGameInformation,
   startGame,
   guessCharacter,
+  finishGame,
 };

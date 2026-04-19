@@ -29,4 +29,21 @@ const insertFoundCharacter = async (sessionId, characterId) => {
   });
 };
 
-export { getGameSessionInformation, insertGameSession, insertFoundCharacter };
+const updateGameSession = async (sessionId, endTime) => {
+  return await prisma.gameSession.update({
+    where: {
+      id: sessionId,
+    },
+    data: {
+      endTime: endTime,
+      completed: true,
+    },
+  });
+};
+
+export {
+  getGameSessionInformation,
+  insertGameSession,
+  insertFoundCharacter,
+  updateGameSession,
+};
