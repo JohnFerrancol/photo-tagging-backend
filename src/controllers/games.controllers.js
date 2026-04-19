@@ -1,6 +1,13 @@
 import { getAllGames, getSingleGame } from '../services/games.services.js';
 import { getSingleCharacterData } from '../services/characters.services.js';
-import { insertGameSession } from '../services/gamesessions.services.js';
+import {
+  getGameSessionInformation,
+  insertGameSession,
+  insertFoundCharacter,
+} from '../services/gamesessions.services.js';
+
+import newGuessValidator from '../validators/guesses.validators.js';
+import { validationResult, matchedData } from 'express-validator';
 
 const getGamesInformation = async (req, res) => {
   try {
@@ -73,42 +80,87 @@ const startGame = async (req, res) => {
   }
 };
 
-const guessCharacter = async (req, res) => {
-  try {
-    const gameId = Number(req.params.gameId);
-    const { characterName, x, y } = req.body;
+const guessCharacter = [
+  newGuessValidator,
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
 
-    const characterData = await getSingleCharacterData(gameId, characterName);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid data',
+          errors: errors.array(),
+        });
+      }
 
-    if (!characterData) {
-      return res.status(404).json({
+      const gameId = Number(req.params.gameId);
+      const { characterName, x, y, sessionId } = matchedData(req);
+
+      // Checking whether the session is in the database
+      const sessionData = await getGameSessionInformation(sessionId);
+      if (!sessionData) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Session not found',
+          correct: false,
+        });
+      }
+
+      // Checking whether the session even belongs to the game
+      if (sessionData.gameId !== gameId) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Session does not belong to this game',
+        });
+      }
+
+      // Checking whether the character is in the database
+      const characterData = await getSingleCharacterData(gameId, characterName);
+      if (!characterData) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Character not found',
+          correct: false,
+        });
+      }
+
+      // Checking whether the character is already found
+      if (sessionData.foundCharacterIds.includes(characterData.id)) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Character already found',
+          correct: false,
+        });
+      }
+
+      // Checking the tolerance and whether the x and y values given by the user is correct
+      const withinX =
+        Math.abs(x - characterData.x_value) <= characterData.x_tolerance;
+
+      const withinY =
+        Math.abs(y - characterData.y_value) <= characterData.y_tolerance;
+
+      const correct = withinX && withinY;
+
+      if (correct) {
+        await insertFoundCharacter(sessionId, characterData.id);
+      }
+
+      res.json({
+        status: 'success',
+        message: 'Verification Done',
+        correct,
+        character: characterData.name,
+      });
+    } catch (error) {
+      res.status(500).json({
         status: 'error',
-        message: 'Character not found',
-        correct: false,
+        message: error.message,
       });
     }
-
-    const withinX =
-      Math.abs(x - characterData.x_value) <= characterData.x_tolerance;
-
-    const withinY =
-      Math.abs(y - characterData.y_value) <= characterData.y_tolerance;
-
-    const correct = withinX && withinY;
-
-    res.json({
-      status: 'success',
-      message: 'Verification Done',
-      correct,
-      character: characterData.name,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      message: error.message,
-    });
-  }
-};
+  },
+];
 
 export {
   getGamesInformation,
