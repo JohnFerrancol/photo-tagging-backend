@@ -45,12 +45,12 @@ model Leaderboard {
 }
 
 model GameSession {
-  id              Int       @id @default(autoincrement())
-  startTime       DateTime  @default(now())
-  endTime         DateTime?
-  createdAt       DateTime  @default(now())
-  foundCharacters Int       @default(0)
-  completed       Boolean   @default(false)
+  id                Int       @id @default(autoincrement())
+  startTime         DateTime  @default(now())
+  endTime           DateTime?
+  createdAt         DateTime  @default(now())
+  foundCharacterIds Int[]
+  completed         Boolean   @default(false)
 
   game   Game @relation(fields: [gameId], references: [id])
   gameId Int
