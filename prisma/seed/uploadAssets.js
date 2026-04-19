@@ -12,10 +12,14 @@ const __dirname = path.dirname(__filename);
 const OUTPUT_FILE = path.resolve(__dirname, 'uploadedData.json');
 
 async function uploadAll() {
+  if (fs.existsSync(OUTPUT_FILE)) {
+    console.log('uploadedData.json already exists!');
+    return;
+  }
   const uploadedGames = [];
 
   for (const game of games) {
-    console.log(`Uploading game: ${game.name}`);
+    console.log(`\nUploading game: ${game.name}`);
 
     const gameImageUrl = await uploadImage(game.imagePath, game.folder);
 
