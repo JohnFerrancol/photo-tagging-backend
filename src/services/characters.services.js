@@ -1,5 +1,14 @@
 import { prisma } from '../config/prisma.js';
 
+const getSingleCharacterData = async (gameId, characterName) => {
+  return await prisma.character.findFirst({
+    where: {
+      gameId: gameId,
+      name: characterName,
+    },
+  });
+};
+
 const insertCharacter = async (
   name,
   imageUrl,
@@ -22,4 +31,4 @@ const insertCharacter = async (
   });
 };
 
-export { insertCharacter };
+export { getSingleCharacterData, insertCharacter };
