@@ -1,5 +1,6 @@
 import { getAllGames, getSingleGame } from '../services/games.services.js';
 import { getSingleCharacterData } from '../services/characters.services.js';
+import { insertGameSession } from '../services/gamesessions.services.js';
 
 const getGamesInformation = async (req, res) => {
   try {
@@ -50,6 +51,28 @@ const getSingleGameInformation = async (req, res) => {
   }
 };
 
+const startGame = async (req, res) => {
+  try {
+    const gameId = Number(req.params.gameId);
+
+    const gameSessionData = await insertGameSession(gameId);
+
+    res.status(201).json({
+      status: 'success',
+      message: `Create Game session id: ${gameSessionData.id}`,
+      session: {
+        id: gameSessionData.id,
+        startTime: gameSessionData.startTime,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
 const guessCharacter = async (req, res) => {
   try {
     const gameId = Number(req.params.gameId);
@@ -87,4 +110,9 @@ const guessCharacter = async (req, res) => {
   }
 };
 
-export { getGamesInformation, getSingleGameInformation, guessCharacter };
+export {
+  getGamesInformation,
+  getSingleGameInformation,
+  startGame,
+  guessCharacter,
+};

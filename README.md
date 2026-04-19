@@ -157,6 +157,6 @@ npm run start
 - [x] Create HTTP Request for GET /games to obtain the infromation of the games for the Home Page in the frontend
 - [x] Create HTTP Request for GET /games/:gameId to obtain the infromation for the specific game for the Game Page in the frontend
 - [x] Create HTTP Request for GET /leaderboards/:gameId to obtain the leaderboard for each game for the Leaderboard Page in the frontend
-- [ ] Create HTTP Request for POST /games/:gameId/start to start a game and store it in a session
+- [x] Create HTTP Request for POST /games/:gameId/start to start a game and store it in a session
 - [x] Create HTTP Request for POST /games/:gameId/guess to verify the user's guess
 - [ ] Create HTTP Request for POST /games/:gameId/finish to save the user's information, like completion time and name, after completing each game
