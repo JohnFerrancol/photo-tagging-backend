@@ -28,7 +28,7 @@ GET /games
 - Returns all available images
 
 ```sh
-GET /games/:id
+GET /games/:gameId
 ```
 
 - Returns image + characters
@@ -36,21 +36,21 @@ GET /games/:id
 ### Gameplay Routes
 
 ```sh
-POST /games/:id/start
+POST /games/:gameId/start
 ```
 
 - Starts game session
 - Returns sessionId
 
 ```sh
-POST /games/:id/guess
+POST /games/:gameId/guess
 ```
 
 - Validates user click
 - Checks character + coordinates
 
 ```sh
-POST /games/:id/finish
+POST /games/:gameId/finish
 ```
 
 - Ends session
@@ -60,7 +60,7 @@ POST /games/:id/finish
 ### Leaderboard Route
 
 ```sh
-GET /leaderboard/:id
+GET /leaderboard/:gameId
 ```
 
 - Returns sorted scores
