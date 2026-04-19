@@ -21,7 +21,7 @@ const games = [
         yTol: 0.015,
       },
       {
-        name: 'swimmer',
+        name: 'Swimmer',
         imagePath: 'swimmer.png',
         x: 0.141,
         y: 0.284,

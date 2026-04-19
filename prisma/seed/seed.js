@@ -52,8 +52,8 @@ async function main() {
         char.name,
         charImageUrl,
         char.x,
-        char.y,
         char.xTol,
+        char.y,
         char.yTol,
         createdGame.id
       );
