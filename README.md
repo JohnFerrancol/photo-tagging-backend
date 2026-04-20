@@ -112,7 +112,7 @@ photo-tagging-backend/
 
 ### Prerequisites
 
-You will need to install the latest version of npm and have PostgreSQL and a Supabase bucket set up to get started on using this project
+You will need to install the latest version of npm, have PostgreSQL and a Supabase bucket set up, to get started on using this project
 
 - npm
 
@@ -121,7 +121,7 @@ npm install npm@latest -g
 ```
 
 - [PostgreSQL setup](https://www.theodinproject.com/lessons/nodejs-using-postgresql)
-- [Supbase bucket setup](https://supabase.com/docs/guides/storage/buckets/creating-buckets)
+- [Supabase Storage Setup](https://supabase.com/docs/guides/storage/quickstart)
 
 ### Installation
 
