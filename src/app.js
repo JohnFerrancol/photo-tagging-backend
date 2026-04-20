@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
-      'https://photo-tagging-frontend.vercel.app/',
+      'https://photo-tagging-frontend.vercel.app',
     ],
   })
 );
