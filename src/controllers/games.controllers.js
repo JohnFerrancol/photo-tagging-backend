@@ -179,8 +179,6 @@ const finishGame = [
 
       const gameId = Number(req.params.gameId);
       const { sessionId, playerName, clientEndTime } = matchedData(req);
-      console.log(matchedData(req));
-      console.log(clientEndTime);
 
       // Checking whether the session is in the database
       const sessionData = await getGameSessionInformation(sessionId);

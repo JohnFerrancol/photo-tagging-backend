@@ -8,8 +8,10 @@ const finishGameValidator = [
     .withMessage('Session ID must be an integer'),
 
   body('playerName')
+    .trim()
     .notEmpty()
     .withMessage('Player name is required')
+    .bail()
     .isLength({ min: 2, max: 30 })
     .withMessage('Player name must be between 2 and 30 characters'),
 
