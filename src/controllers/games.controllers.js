@@ -178,7 +178,9 @@ const finishGame = [
       }
 
       const gameId = Number(req.params.gameId);
-      const { sessionId, playerName } = matchedData(req);
+      const { sessionId, playerName, clientEndTime } = matchedData(req);
+      console.log(matchedData(req));
+      console.log(clientEndTime);
 
       // Checking whether the session is in the database
       const sessionData = await getGameSessionInformation(sessionId);
@@ -215,7 +217,7 @@ const finishGame = [
       }
 
       // Compute the time
-      const endTime = new Date();
+      const endTime = new Date(clientEndTime);
       const startTime = new Date(sessionData.startTime);
 
       const completionTime =
