@@ -15,7 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 // Set up CORS for the local React app as well as the deployed Vercel App
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://photo-tagging-frontend.app'],
+    origin: [
+      'http://localhost:5173',
+      'https://photo-tagging-frontend.vercel.app/',
+    ],
   })
 );
 
